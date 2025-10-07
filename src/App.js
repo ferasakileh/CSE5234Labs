@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+  import React from 'react';
+  import './App.css';
+  import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+  import Purchase from './components/purchase';
+  import PaymentEntry from './components/paymentEntry';
+  import ShippingEntry from './components/shippingEntry'; 
+  import ViewOrder from './components/viewOrder';
+  import ViewConfirmation from './components/viewConfirmation';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+  function App() {
+    return (
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path='/purchase' element={<Purchase />} />
+            <Route path='/purchase/shippingEntry' element={<ShippingEntry />} />
+            <Route path='/purchase/paymentEntry' element={<PaymentEntry />} />
+            <Route path='/purchase/viewOrder' element={<ViewOrder />} />
+            <Route path='/purchase/viewConfirmation' element={<ViewConfirmation />} />  
+            <Route path="/" element={<Navigate replace to="/purchase" />} />
+          </Routes>
+        </div>
+      </Router>
+    );
+  }
 
-export default App;
+  export default App;
