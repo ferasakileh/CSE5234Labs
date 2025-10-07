@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 const ShippingEntry = () => {
     // Hooks 
@@ -12,6 +13,10 @@ const ShippingEntry = () => {
         state: '',
         zip: ''
     });
+    
+    useEffect(() => {
+        document.title = 'Shipping Information';
+    }, []); // The empty array means this effect runs only once when the component first loads
 
     // Handler Functions
     // Handle user typing in box
