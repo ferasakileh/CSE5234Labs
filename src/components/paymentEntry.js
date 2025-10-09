@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { products } from '../data/products';
 
 const PaymentEntry = () => {
     
     const location = useLocation();
     const navigate = useNavigate();
+    
+    // Redirect if no order data
+    React.useEffect(() => {
+        if (!location.state || !location.state.order) {
+            navigate('/purchase');
+        }
+    }, [location.state, navigate]);
+
     
     const [paymentInfo, setPaymentInfo] = useState({
         credit_card_number: '',
@@ -92,8 +101,21 @@ const PaymentEntry = () => {
             
             <div className="mb-3">
                 <h3>Order Summary:</h3>
-                <p>Product 1 Quantity: {location.state.order.buyQuantity[0]}</p>
-                <p>Product 2 Quantity: {location.state.order.buyQuantity[1]}</p>
+                {location.state?.order?.items.map(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return (
+                        <div key={item.productId} className="d-flex justify-content-between align-items-center mb-2">
+                            <span>{product.name}</span>
+                            <span>Quantity: {item.quantity} × ${product.price} = ${item.quantity * product.price}</span>
+                        </div>
+                    );
+                })}
+                <div className="mt-3 border-top pt-2">
+                    <strong>Total: ${location.state?.order?.items.reduce((total, item) => {
+                        const product = products.find(p => p.id === item.productId);
+                        return total + (item.quantity * product.price);
+                    }, 0)}</strong>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="card p-4">

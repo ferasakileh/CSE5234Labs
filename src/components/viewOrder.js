@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { products } from '../data/products';
 
 const ViewOrder = () => {
   const location = useLocation();
@@ -30,14 +31,14 @@ const ViewOrder = () => {
       <h1>Order Summary</h1>
 
       <h3>Products Quantity</h3>
-      {order.buyQuantity.map((qty, i) =>
-        qty > 0 ? (
-          <p key={i}>
-            {/* Product {i + 1}: {qty} × ${prices[i]} = ${qty * prices[i]} */}
-            Product {i + 1} : {qty}
+      {order.items.map((item) => {
+        const product = products.find(p => p.id === item.productId);
+        return item.quantity > 0 ? (
+          <p key={item.productId}>
+            {product.name} : {item.quantity}
           </p>
-        ) : null
-      )}
+        ) : null;
+      })}
 
       <h3>Payment Information</h3>
       <p>Card Holder: {order.card_holder_name}</p>
