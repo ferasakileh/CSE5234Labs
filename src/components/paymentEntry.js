@@ -86,6 +86,8 @@ const PaymentEntry = () => {
             ...location.state.order,
             ...paymentInfo
         };
+
+        localStorage.removeItem('cart');
         
         // Navigate to the next page (e.g., shipping information or confirmation)
         navigate('/purchase/shippingEntry', { 
