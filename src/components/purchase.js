@@ -13,34 +13,43 @@ const Purchase = () => {
     const navigate = useNavigate();
     
     const handleSubmit = (e) => {
-        navigate('/purchase/paymententry', {order: order, setOrder: setOrder});
+        e.preventDefault();
+        navigate('/purchase/paymentEntry', { state: { order: order } });
     };
     
     console.log('order: ', order);
 
     return (
-        <div>
+        <div className="container mt-4">
             <h1>{title}</h1>
             <form onSubmit={handleSubmit}>
-                <label>Product 1:</label>
-                <input
-                    type="number"
-                    required
-                    onChange={(e) => {
-                        order.buyQuantity[0] = e.target.value;
-                    }}
-                />
-                <br/>
-                <label>Product 2:</label>
-                <input
-                    type="number"
-                    required
-                    onChange={(e) => {
-                        order.buyQuantity[1] = e.target.value;
-                    }}
-                />
-                <br/>
-                <button className="button">Pay</button>
+                <div className="mb-3">
+                    <label className="form-label">Product 1:</label>
+                    <input
+                        type="number"
+                        className="form-control"
+                        required
+                        onChange={(e) => {
+                            const newOrder = {...order};
+                            newOrder.buyQuantity[0] = e.target.value;
+                            setOrder(newOrder);
+                        }}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Product 2:</label>
+                    <input
+                        type="number"
+                        className="form-control"
+                        required
+                        onChange={(e) => {
+                            const newOrder = {...order};
+                            newOrder.buyQuantity[1] = e.target.value;
+                            setOrder(newOrder);
+                        }}
+                    />
+                </div>
+                <button type="submit" className="btn btn-primary">Pay</button>
             </form>
         </div>
     );
