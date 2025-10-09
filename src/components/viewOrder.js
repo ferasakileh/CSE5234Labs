@@ -1,63 +1,102 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { products } from '../data/products';
+import { products } from "../data/products";
 
 const ViewOrder = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Retrieve both payment and shipping info from prior pages
-  const { shippingInfo, order } = location.state || {};
+  // Retrieve order + shipping information passed from previous pages
+  const { order, shippingInfo } = location.state || {};
 
   if (!order || !shippingInfo) {
     return <p>Missing order or shipping information.</p>;
   }
 
-  // Compute a simple total price
-  // const prices = [10, 20, 30, 40]; // hypothetical product prices
-  // const total = order.buyQuantity.reduce(
-  //   (sum, qty, i) => sum + qty * prices[i],
-  //   0
-  // );
+  // Calculate total cost
+  const totalCost = order.items.reduce((total, item) => {
+    const product = products.find((p) => p.id === item.productId);
+    return total + (product?.price || 0) * item.quantity;
+  }, 0);
 
   const handleConfirm = () => {
+    // Proceed to confirmation page with final data
     navigate("/purchase/viewConfirmation", {
       state: { order, shippingInfo, confirmationCode: "CONF123456" },
     });
   };
 
   return (
-    <div>
-      <h1>Order Summary</h1>
+    <div className="container mt-4">
+      <h1 className="mb-4">Order Summary</h1>
 
-      <h3>Products Quantity</h3>
-      {order.items.map((item) => {
-        const product = products.find(p => p.id === item.productId);
-        return item.quantity > 0 ? (
-          <p key={item.productId}>
-            {product.name} : {item.quantity}
-          </p>
-        ) : null;
-      })}
+      {/* Order Items Summary */}
+      <div className="card p-4 mb-4">
+        <h3>Items Ordered</h3>
+        <ul className="list-group list-group-flush">
+          {order.items.map((item) => {
+            const product = products.find((p) => p.id === item.productId);
+            if (!product) return null;
+            return (
+              <li
+                key={item.productId}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <div>
+                  <strong>{product.name}</strong> × {item.quantity}
+                </div>
+                <div>${(product.price * item.quantity).toFixed(2)}</div>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-3 border-top pt-2 text-end">
+          <h5>Total: ${totalCost.toFixed(2)}</h5>
+        </div>
+      </div>
 
-      <h3>Payment Information</h3>
-      <p>Card Holder: {order.card_holder_name}</p>
-      <p>Card Number: {order.credit_card_number}</p>
-      <p>Expiration: {order.expir_date}</p>
-      <p>CVV: {order.cvvCode}</p>
+      {/* Payment Information */}
+      <div className="card p-4 mb-4">
+        <h3>Payment Information</h3>
+        <p>
+          <strong>Card Holder:</strong> {order.card_holder_name}
+        </p>
+        <p>
+          <strong>Card Number:</strong>{" "}
+          {order.credit_card_number
+            ? "**** **** **** " + order.credit_card_number.slice(-4)
+            : "N/A"}
+        </p>
+        <p>
+          <strong>Expiration:</strong> {order.expir_date}
+        </p>
+      </div>
 
-      <h3>Shipping Details</h3>
-      <p>{shippingInfo.name}</p>
-      <p>{shippingInfo.addressLine1}</p>
-      {shippingInfo.addressLine2 && <p>{shippingInfo.addressLine2}</p>}
-      <p>
-        {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zip}
-      </p>
+      {/* Shipping Details */}
+      <div className="card p-4 mb-4">
+        <h3>Shipping Details</h3>
+        <p>
+          <strong>Name:</strong> {shippingInfo.name}
+        </p>
+        <p>
+          <strong>Address:</strong> {shippingInfo.addressLine1}
+          {shippingInfo.addressLine2 && `, ${shippingInfo.addressLine2}`}
+        </p>
+        <p>
+          <strong>City/State/ZIP:</strong>{" "}
+          {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zip}
+        </p>
+      </div>
 
-      {/* <h3>Total: ${total}</h3> */}
-
-      <button onClick={() => navigate(-1)}>Back</button>
-      <button onClick={handleConfirm}>Confirm Order</button>
+      {/* Confirmation Buttons */}
+      <div className="d-flex justify-content-between mt-4">
+        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+          Back
+        </button>
+        <button className="btn btn-success" onClick={handleConfirm}>
+          Confirm Order
+        </button>
+      </div>
     </div>
   );
 };
