@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 const ShippingEntry = () => {
     // Hooks 
     const navigate = useNavigate();
+    const location = useLocation();
     const [shippingInfo, setShippingInfo] = useState({
         name: '',
         addressLine1: '',
@@ -30,10 +31,20 @@ const ShippingEntry = () => {
 
     // Handle form submission
     const handleSubmit = (e) => {
-        e.preventDefault(); 
-        // Navigate to next page and pass the data
-        navigate('/purchase/viewOrder', { state: { shippingInfo: shippingInfo } });
-    };
+        e.preventDefault();
+
+        // Retrieve order object from previous step (if available)
+        const previousState = location.state || {};
+        const order = previousState.order || {};
+
+        // Navigate to viewOrder with BOTH order + shipping info
+        navigate('/purchase/viewOrder', {
+            state: {
+            order: order,
+            shippingInfo: shippingInfo
+            }
+        });
+        };
 
     // 5. Form
     return (
