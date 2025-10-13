@@ -1,0 +1,49 @@
+/* viewOrder.css */
+.vieworder-page {
+  background-color: #fffdfd;
+  color: #333;
+}
+
+/* Theme colors */
+.text-theme {
+  color: #800000 !important;
+}
+
+.border-theme {
+  border-color: #800000 !important;
+}
+
+/* Buttons */
+.btn-theme {
+  background-color: #800000;
+  color: white;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.btn-theme:hover {
+  background-color: #a33c3c;
+  color: #fff;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(128, 0, 0, 0.2);
+}
+
+/* List items */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #f0dcdc;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}

@@ -1,8 +1,9 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
 import CartModal from './CartModal';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/purchase.css'; // new theme styles
 
 const Purchase = () => {
     let title = "Purchase Page";
@@ -59,16 +60,16 @@ const Purchase = () => {
     };
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4 purchase-page">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>{title}</h1>
+                <h1 className="text-theme fw-bold">{title}</h1>
                 <button 
-                    className="btn btn-primary position-relative"
+                    className="btn btn-theme position-relative"
                     onClick={() => setShowCart(true)}
                 >
                     View Cart
                     {cart.length > 0 && (
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-theme-danger">
                             {cart.reduce((sum, item) => sum + item.quantity, 0)}
                         </span>
                     )}
@@ -78,20 +79,24 @@ const Purchase = () => {
             <div className="row row-cols-1 row-cols-md-3 g-4">
                 {products.map((product) => (
                     <div key={product.id} className="col">
-                        <div className="card h-100">
-                            <div className="card-body">
-                                <h5 className="card-title">{product.name}</h5>
-                                <img src={product.image} alt={product.name} className="card-img-top mb-3" />
-                                <p className="card-text">Price: ${product.price}</p>
+                        <div className="card h-100 border-theme shadow-sm">
+                            <img 
+                                src={product.image} 
+                                alt={product.name} 
+                                className="card-img-top p-3 rounded"
+                            />
+                            <div className="card-body text-center">
+                                <h5 className="card-title text-theme fw-bold">{product.name}</h5>
+                                <p className="card-text text-muted fs-5">Price: ${product.price}</p>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <button 
-                                        className="btn btn-primary"
+                                        className="btn btn-theme flex-grow-1 me-2"
                                         onClick={() => addToCart(product)}
                                     >
                                         Add to Cart
                                     </button>
                                     {getItemQuantity(product.id) > 0 && (
-                                        <span className="badge bg-secondary">
+                                        <span className="badge bg-theme-secondary">
                                             In cart: {getItemQuantity(product.id)}
                                         </span>
                                     )}

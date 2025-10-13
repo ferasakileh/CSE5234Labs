@@ -1,0 +1,45 @@
+/* paymentEntry.css */
+.payment-page {
+  background-color: #fffdfd;
+  color: #333;
+}
+
+/* Theme color utilities */
+.text-theme {
+  color: #800000 !important;
+}
+
+.border-theme {
+  border-color: #800000 !important;
+}
+
+/* Buttons */
+.btn-theme {
+  background-color: #800000;
+  color: white;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.btn-theme:hover {
+  background-color: #a33c3c;
+  color: #fff;
+}
+
+/* Card styles */
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(128, 0, 0, 0.2);
+}
+
+/* Inputs */
+.form-control:focus {
+  border-color: #800000;
+  box-shadow: 0 0 5px rgba(128, 0, 0, 0.3);
+}

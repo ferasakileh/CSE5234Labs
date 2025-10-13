@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/shippingEntry.css";
 
 const ShippingEntry = () => {
   const navigate = useNavigate();
@@ -28,7 +30,6 @@ const ShippingEntry = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const previousState = location.state || {};
     const order = previousState.order || {};
 
@@ -41,12 +42,12 @@ const ShippingEntry = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Shipping Information</h1>
+    <div className="container mt-4 shipping-page">
+      <h1 className="text-theme fw-bold mb-4 text-center">Shipping Information</h1>
 
-      <form onSubmit={handleSubmit} className="card p-4">
+      <form onSubmit={handleSubmit} className="card shadow-sm border-theme p-4">
         <div className="mb-3">
-          <label className="form-label">Full Name</label>
+          <label className="form-label fw-semibold">Full Name</label>
           <input
             type="text"
             name="name"
@@ -59,7 +60,7 @@ const ShippingEntry = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Address Line 1</label>
+          <label className="form-label fw-semibold">Address Line 1</label>
           <input
             type="text"
             name="addressLine1"
@@ -72,7 +73,7 @@ const ShippingEntry = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Address Line 2 (Optional)</label>
+          <label className="form-label fw-semibold">Address Line 2 (Optional)</label>
           <input
             type="text"
             name="addressLine2"
@@ -85,7 +86,7 @@ const ShippingEntry = () => {
 
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label">City</label>
+            <label className="form-label fw-semibold">City</label>
             <input
               type="text"
               name="city"
@@ -98,7 +99,7 @@ const ShippingEntry = () => {
           </div>
 
           <div className="col-md-4 mb-3">
-            <label className="form-label">State</label>
+            <label className="form-label fw-semibold">State</label>
             <input
               type="text"
               name="state"
@@ -111,7 +112,7 @@ const ShippingEntry = () => {
           </div>
 
           <div className="col-md-4 mb-3">
-            <label className="form-label">ZIP Code</label>
+            <label className="form-label fw-semibold">ZIP Code</label>
             <input
               type="text"
               name="zip"
@@ -124,15 +125,15 @@ const ShippingEntry = () => {
           </div>
         </div>
 
-        <div className="d-flex justify-content-between mt-4">
+        <div className="d-flex justify-content-end mt-4">
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary me-2"
             onClick={() => navigate(-1)}
           >
             Back
           </button>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-theme">
             Continue to Order Summary
           </button>
         </div>
