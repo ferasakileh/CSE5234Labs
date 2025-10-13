@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #800000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -52,4 +52,19 @@
 
 .show {
     display: block;
+}
+
+.bg-maroon {
+    background-color: #800000; 
+}
+
+.navbar-brand-custom {
+  font-size: x-large;
+  font-weight: bold;
+  color: beige;
+}
+
+.float-to-right {
+  display: inline-flex;
+  float: inline-end;
 }

@@ -6,19 +6,25 @@
   import ShippingEntry from './components/shippingEntry'; 
   import ViewOrder from './components/viewOrder';
   import ViewConfirmation from './components/viewConfirmation';
+  import Header from './components/Header';
+  import Footer from './components/Footer';
 
   function App() {
     return (
       <Router>
-        <div className="App">
-          <Routes>
-            <Route path='/purchase' element={<Purchase />} />
-            <Route path='/purchase/shippingEntry' element={<ShippingEntry />} />
-            <Route path='/purchase/paymentEntry' element={<PaymentEntry />} />
-            <Route path='/purchase/viewOrder' element={<ViewOrder />} />
-            <Route path='/purchase/viewConfirmation' element={<ViewConfirmation />} />  
-            <Route path="/" element={<Navigate replace to="/purchase" />} />
-          </Routes>
+        <div className="App d-flex flex-column min-vh-100">
+          <Header />
+          <main className="flex-fill">
+            <Routes>
+              <Route path='/purchase' element={<Purchase />} />
+              <Route path='/purchase/shippingEntry' element={<ShippingEntry />} />
+              <Route path='/purchase/paymentEntry' element={<PaymentEntry />} />
+              <Route path='/purchase/viewOrder' element={<ViewOrder />} />
+              <Route path='/purchase/viewConfirmation' element={<ViewConfirmation />} />  
+              <Route path="/" element={<Navigate replace to="/purchase" />} />
+            </Routes>
+          </main>
+          <Footer />
         </div>
       </Router>
     );
