@@ -7,6 +7,7 @@
   import ViewOrder from './components/viewOrder';
   import ViewConfirmation from './components/viewConfirmation';
   import ContactUs from './components/contactUs'; 
+  import AboutUs from './components/aboutUs';
 
   function App() {
     return (
