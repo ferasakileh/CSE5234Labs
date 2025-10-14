@@ -1,60 +1,6 @@
 /* cartModal.css */
-.text-theme {
-  color: #800000 !important;
-}
+.border-theme-light { border: 1px solid rgba(128, 0, 0, 0.2) !important; }
 
-.bg-theme {
-  background-color: #800000 !important;
-}
+/* Card-specific tuning */
+.cart-card:hover { transform: translateY(-2px); transition: 0.3s ease; box-shadow: 0 4px 14px rgba(128,0,0,0.12); }
 
-.border-theme {
-  border-color: #800000 !important;
-}
-
-.border-theme-light {
-  border: 1px solid rgba(128, 0, 0, 0.2) !important;
-}
-
-.btn-theme {
-  background-color: #800000;
-  color: white;
-  border: none;
-  transition: 0.3s ease;
-}
-
-.btn-theme:hover {
-  background-color: #a33c3c;
-  color: #fff;
-}
-
-.btn-outline-theme {
-  color: #800000;
-  border: 1px solid #800000;
-  background-color: transparent;
-  transition: 0.3s ease;
-}
-
-.btn-outline-theme:hover {
-  background-color: #800000;
-  color: white;
-}
-
-.alert-theme {
-  background-color: rgba(128, 0, 0, 0.1);
-  border-left: 5px solid #800000;
-  color: #800000;
-  font-weight: 500;
-}
-
-/* Card hover polish */
-.card:hover {
-  transform: translateY(-2px);
-  transition: 0.3s ease;
-  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.15);
-}
-
-/* Input focus color consistency */
-.form-control:focus {
-  border-color: #800000;
-  box-shadow: 0 0 4px rgba(128, 0, 0, 0.3);
-}

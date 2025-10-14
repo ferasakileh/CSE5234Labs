@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { products } from "../data/products";
+import { products } from "../../data/products";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/viewOrder.css"; // theme styles
+import "../../styles/viewOrder.css"; // theme styles
 
 const ViewOrder = () => {
   const location = useLocation();

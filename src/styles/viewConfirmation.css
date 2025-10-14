@@ -1,65 +1,10 @@
+
 /* viewConfirmation.css */
-.confirmation-page {
-  background-color: #fffdfd;
-  color: #333;
-}
+.confirmation-page { background-color: var(--page-bg); color: var(--text-default); }
 
-/* Theme core */
-.text-theme {
-  color: #800000 !important;
-}
+.alert-success { background-color: #f4fdf4; color: #333; border: 2px solid var(--theme-maroon); }
 
-.border-theme {
-  border-color: #800000 !important;
-}
+/* List groups stay local */
+.list-group-item { border: none; border-bottom: 1px solid #f0dcdc; }
+.list-group-item:last-child { border-bottom: none; }
 
-/* Primary theme backgrounds */
-.bg-theme {
-  background-color: #800000 !important;
-}
-
-.btn-theme {
-  background-color: #800000;
-  color: #fff;
-  border: none;
-  transition: 0.3s ease;
-}
-
-.btn-theme:hover {
-  background-color: #a33c3c;
-  color: #fff;
-}
-
-/* Cards */
-.card {
-  border-radius: 10px;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(128, 0, 0, 0.2);
-}
-
-/* Alert style */
-.alert-success {
-  background-color: #f4fdf4;
-  color: #333;
-  border: 2px solid #800000;
-}
-
-/* List groups */
-.list-group-item {
-  border: none;
-  border-bottom: 1px solid #f0dcdc;
-}
-
-.list-group-item:last-child {
-  border-bottom: none;
-}
-
-/* Badge */
-.bg-theme {
-  background-color: #800000 !important;
-  color: #fff;
-}

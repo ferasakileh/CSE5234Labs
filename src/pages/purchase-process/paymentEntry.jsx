@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
+import { products } from '../../data/products';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/paymentEntry.css'; // new theme styling
+import '../../styles/paymentEntry.css'; // new theme styling
 
 const PaymentEntry = () => {
     const location = useLocation();

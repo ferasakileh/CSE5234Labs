@@ -1,43 +1,6 @@
 /* purchase.css */
-.purchase-page {
-  background-color: #fffdfd;
-}
 
-/* Theme colors */
-.text-theme {
-  color: #800000 !important;
-}
+.purchase-page { background-color: var(--page-bg); }
 
-.border-theme {
-  border: 1px solid #800000 !important;
-}
-
-.btn-theme {
-  background-color: #800000;
-  color: white;
-  border: none;
-  transition: 0.3s ease;
-}
-
-.btn-theme:hover {
-  background-color: #a33c3c;
-  color: #fff;
-}
-
-.bg-theme-danger {
-  background-color: #a33c3c !important;
-}
-
-.bg-theme-secondary {
-  background-color: #c3a6a6 !important;
-  color: #fff;
-}
-
-.card {
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 18px rgba(128, 0, 0, 0.2);
-}
+.bg-theme-secondary { background-color: #c3a6a6 !important; color: #fff; }
+.bg-theme-danger { background-color: var(--theme-maroon-dark) !important; }

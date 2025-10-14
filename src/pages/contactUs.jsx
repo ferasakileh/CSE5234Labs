@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from './DropDown'; // Import the Dropdown component
+import Dropdown from '../components/DropDown'; // Import the Dropdown component
 import "../styles/contactUs.css";
 
 const ContactUs = () => {

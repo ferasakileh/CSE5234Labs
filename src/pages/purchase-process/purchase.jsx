@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
-import CartModal from './CartModal';
+import { products } from '../../data/products';
+import CartModal from '../../components/CartModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/purchase.css'; // new theme styles
+import '../../styles/purchase.css'; // new theme styles
 
 const Purchase = () => {
     let title = "Purchase Page";

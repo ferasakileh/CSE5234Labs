@@ -58,34 +58,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* This is where we add the new color */
-.contact-icon {
-    font-size: 2.5em;
-    color: #800000; /* MAROON COLOR */
-    margin-bottom: 20px;
-}
-
-.contact-card h3 {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.contact-card p {
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.contact-link {
-    font-weight: bold;
-    text-decoration: none;
-    color: #800000; /* MAROON COLOR */
-    transition: color 0.2s;
-}
-
-.contact-link:hover {
-    color: #a00000; /* A slightly lighter maroon for hover */
-}
-
-/* ... your existing .faqs-section styles ... */
+.contact-icon { font-size: 2.5em; margin-bottom: 20px; color: var(--theme-maroon); }
+.contact-card p { color: #666; line-height: 1.5; margin-bottom: 20px; }
+.contact-link { font-weight: bold; text-decoration: none; color: var(--theme-maroon); transition: color 0.2s; }
+.contact-link:hover { color: var(--theme-maroon-dark); }
