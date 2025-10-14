@@ -1,13 +1,13 @@
   import React from 'react';
   import './App.css';
   import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-  import Purchase from './components/purchase';
-  import PaymentEntry from './components/paymentEntry';
-  import ShippingEntry from './components/shippingEntry'; 
-  import ViewOrder from './components/viewOrder';
-  import ViewConfirmation from './components/viewConfirmation';
-  import ContactUs from './components/contactUs'; 
-  import AboutUs from './components/aboutUs';
+  import Purchase from './pages/purchase-process/purchase';
+  import PaymentEntry from './pages/purchase-process/paymentEntry';
+  import ShippingEntry from './pages/purchase-process/shippingEntry'; 
+  import ViewOrder from './pages/purchase-process/viewOrder';
+  import ViewConfirmation from './pages/purchase-process/viewConfirmation';
+  import ContactUs from './pages/contactUs'; 
+  import AboutUs from './pages/aboutUs';
 
   function App() {
     return (

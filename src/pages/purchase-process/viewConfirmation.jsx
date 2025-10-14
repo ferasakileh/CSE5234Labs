@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { products } from "../data/products";
+import { products } from "../../data/products";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../styles/viewConfirmation.css"; // unified theme styling
+import "../../styles/viewConfirmation.css"; // unified theme styling
 
 const ViewConfirmation = () => {
   const location = useLocation();
