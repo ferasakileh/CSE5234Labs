@@ -19,6 +19,7 @@
             <Route path='/purchase/paymentEntry' element={<PaymentEntry />} />
             <Route path='/purchase/viewOrder' element={<ViewOrder />} />
             <Route path='/purchase/viewConfirmation' element={<ViewConfirmation />} />
+            <Route path="/aboutUs" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/" element={<Navigate replace to="/purchase" />} />
           </Routes>
