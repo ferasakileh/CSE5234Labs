@@ -1,6 +1,19 @@
 /* purchase.css */
 
-.purchase-page { background-color: var(--page-bg); }
+.purchase-page {
+    background-color: var(--page-bg);
+}
 
-.bg-theme-secondary { background-color: #c3a6a6 !important; color: #fff; }
-.bg-theme-danger { background-color: var(--theme-maroon-dark) !important; }
+.bg-theme-secondary {
+    background-color: #c3a6a6 !important;
+    color: #fff;
+}
+
+.bg-theme-danger {
+    background-color: var(--theme-maroon-dark) !important;
+}
+
+.purchase-img {
+    height: 400px;
+    object-fit: cover;
+}

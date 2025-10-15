@@ -1,61 +1,102 @@
 /* theme.css - consolidated shared styles for the app */
 
 :root {
-  --theme-maroon: #800000;
-  --theme-maroon-dark: #a33c3c;
-  --theme-maroon-muted: rgba(128, 0, 0, 0.15);
-  --page-bg: #fffdfd;
-  --text-default: #333;
+    --theme-maroon: #800000;
+    --theme-maroon-dark: #a33c3c;
+    --theme-maroon-muted: rgba(128, 0, 0, 0.15);
+    --page-bg: #fffdfd;
+    --text-default: #333;
 }
 
 /* Page backgrounds */
 .page-bg {
-  background-color: var(--page-bg);
-  color: var(--text-default);
+    background-color: var(--page-bg);
+    color: var(--text-default);
 }
 
 /* Theme colors (utilities) */
-.text-theme { color: var(--theme-maroon) !important; }
-.border-theme { border-color: var(--theme-maroon) !important; }
-.bg-theme { background-color: var(--theme-maroon) !important; color: #fff; }
+.text-theme {
+    color: var(--theme-maroon) !important;
+}
+
+.border-theme {
+    border-color: var(--theme-maroon) !important;
+}
+
+.bg-theme {
+    background-color: var(--theme-maroon) !important;
+    color: #fff;
+}
 
 /* Buttons */
 .btn-theme {
-  background-color: var(--theme-maroon);
-  color: white;
-  border: none;
-  transition: 0.3s ease;
+    background-color: var(--theme-maroon);
+    color: white;
+    border: none;
+    transition: 0.3s ease;
 }
-.btn-theme:hover { background-color: var(--theme-maroon-dark); color: #fff; }
+
+.btn-theme:hover {
+    background-color: var(--theme-maroon-dark);
+    color: #fff;
+}
 
 .btn-outline-theme {
-  color: var(--theme-maroon);
-  border: 1px solid var(--theme-maroon);
-  background-color: transparent;
-  transition: 0.3s ease;
+    color: var(--theme-maroon);
+    border: 1px solid var(--theme-maroon);
+    background-color: transparent;
+    transition: 0.3s ease;
 }
-.btn-outline-theme:hover { background-color: var(--theme-maroon); color: white; }
+
+.btn-outline-theme:hover {
+    background-color: var(--theme-maroon);
+    color: white;
+}
 
 /* Cards common */
 .card {
-  background-color: #fff;
-  border-radius: 10px;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
-.card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--theme-maroon-muted); }
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px var(--theme-maroon-muted);
+}
 
 /* Inputs */
-.form-control:focus { border-color: var(--theme-maroon); box-shadow: 0 0 4px rgba(128,0,0,0.2); }
+.form-control:focus {
+    border-color: var(--theme-maroon);
+    box-shadow: 0 0 4px rgba(128, 0, 0, 0.2);
+}
 
 /* Lists */
-.list-group-item { border: none; border-bottom: 1px solid #f0dcdc; }
-.list-group-item:last-child { border-bottom: none; }
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #f0dcdc;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
 
 /* Alerts and subtle backgrounds */
-.alert-theme { background-color: rgba(128,0,0,0.08); border-left: 5px solid var(--theme-maroon); color: var(--theme-maroon); font-weight: 500; }
+.alert-theme {
+    background-color: rgba(128, 0, 0, 0.08);
+    border-left: 5px solid var(--theme-maroon);
+    color: var(--theme-maroon);
+    font-weight: 500;
+}
 
 /* Small helpers */
-.contact-icon { color: var(--theme-maroon); }
+.contact-icon {
+    color: var(--theme-maroon);
+}
 
 /* Utilities for spacing / alignment used across pages */
-.center { display:flex; justify-content:center; align-items:center; }
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

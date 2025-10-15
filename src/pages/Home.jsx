@@ -3,9 +3,59 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { motion } from "framer-motion";
 import BgTexture from "../images/bg-texture.jpg";
+import { products } from "../data/products";
+import { partners } from "../data/partners";
 import "../styles/home.css";
 
 export default function LandingPage() {
+
+    const marketplacePreview = products.slice(0, 4); // Show first 4 products as a preview
+    const partnersPreview = partners.slice(0, 3); // Show first 3 partners
+
+    const marketplaceElements = marketplacePreview.map((item, idx) => (
+        <motion.div
+            key={idx}
+            className="col-sm-6 col-md-4 col-lg-3"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: idx * 0.1 }}
+        >
+            <div className="card h-100 shadow-sm border-0 overflow-hidden">
+                <img
+                    src={item.image}
+                    className="card-img-top marketplace-img"
+                    alt={item.name}
+                />
+                <div className="card-body">
+                    <h5 className="text-theme">{item.name}</h5>
+                </div>
+            </div>
+        </motion.div>
+    ))
+
+    const partnersElements = partnersPreview.map((farmer, idx) => (
+        <motion.div
+            key={idx}
+            className="col-md-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+        >
+            <div className="card h-100 shadow border-0 overflow-hidden">
+                <img
+                    src={farmer.image}
+                    className="card-img-top community-img"
+                    alt={farmer.name}
+                />
+                <div className="card-body">
+                    <h5 className="fw-bold text-theme">{farmer.name}</h5>
+                    <p className="text-muted small">
+                        Local partners bringing fresh goods directly to you.
+                    </p>
+                </div>
+            </div>
+        </motion.div>
+    ))
 
     return (
         <div className="page-bg position-relative overflow-hidden">
@@ -170,43 +220,7 @@ export default function LandingPage() {
 
                 <div className="container">
                     <div className="row g-4 justify-content-center">
-                        {[
-                            {
-                                name: "Organic Tomatoes",
-                                img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=800&q=80",
-                            },
-                            {
-                                name: "Crisp Apples",
-                                img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af?auto=format&fit=crop&w=800&q=80",
-                            },
-                            {
-                                name: "Golden Honey",
-                                img: "https://images.unsplash.com/photo-1644221362205-353214a3124e?auto=format&fit=crop&w=800&q=80",
-                            },
-                            {
-                                name: "Fresh Eggs",
-                                img: "https://images.unsplash.com/photo-1680183536340-3604dad68afc?auto=format&fit=crop&w=800&q=80",
-                            },
-                        ].map((item, idx) => (
-                            <motion.div
-                                key={idx}
-                                className="col-sm-6 col-md-4 col-lg-3"
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                            >
-                                <div className="card h-100 shadow-sm border-0 overflow-hidden">
-                                    <img
-                                        src={item.img}
-                                        className="card-img-top marketplace-img"
-                                        alt={item.name}
-                                    />
-                                    <div className="card-body">
-                                        <h5 className="text-theme">{item.name}</h5>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                        {marketplaceElements}
                     </div>
                 </div>
             </motion.section>
@@ -230,42 +244,7 @@ export default function LandingPage() {
 
                 <div className="container">
                     <div className="row g-4 justify-content-center">
-                        {[
-                            {
-                                name: "The Greenfield Family",
-                                img: "https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?auto=format&fit=crop&w=800&q=80",
-                            },
-                            {
-                                name: "Walnut Farm",
-                                img: "https://images.unsplash.com/photo-1517817500400-c961b0488325?auto=format&fit=crop&w=800&q=80",
-                            },
-                            {
-                                name: "Riverbend Organics",
-                                img: "https://images.unsplash.com/photo-1485801378227-e82f6a4be23a?auto=format&fit=crop&w=800&q=80",
-                            },
-                        ].map((farmer, idx) => (
-                            <motion.div
-                                key={idx}
-                                className="col-md-4"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.7 }}
-                            >
-                                <div className="card h-100 shadow border-0 overflow-hidden">
-                                    <img
-                                        src={farmer.img}
-                                        className="card-img-top community-img"
-                                        alt={farmer.name}
-                                    />
-                                    <div className="card-body">
-                                        <h5 className="fw-bold text-theme">{farmer.name}</h5>
-                                        <p className="text-muted small">
-                                            Local partners bringing fresh goods directly to you.
-                                        </p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
+                        {partnersElements}
                     </div>
                 </div>
             </section>
