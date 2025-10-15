@@ -1,2 +1,4 @@
 /* aboutUs.css */
-.about-page { background-color: var(--page-bg); }
+.about-page {
+    background-color: var(--page-bg);
+}

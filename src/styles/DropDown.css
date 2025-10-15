@@ -6,7 +6,7 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .dropdown-title {
@@ -16,7 +16,8 @@
     padding: 18px 20px;
     width: 100%;
     border: none;
-    text-align: left; /* The title itself is already left-aligned, which is good */
+    text-align: left;
+    /* The title itself is already left-aligned, which is good */
     outline: none;
     font-size: 1.1em;
     display: flex;
@@ -25,9 +26,14 @@
     transition: background-color 0.3s ease;
 }
 
-.dropdown-title:hover { background-color: var(--theme-maroon-dark); }
+.dropdown-title:hover {
+    background-color: var(--theme-maroon-dark);
+}
 
-.dropdown-arrow { color: white; transition: transform 0.3s ease-in-out; }
+.dropdown-arrow {
+    color: white;
+    transition: transform 0.3s ease-in-out;
+}
 
 .dropdown-arrow.open {
     transform: rotate(180deg);
@@ -38,22 +44,26 @@
     background-color: white;
     border-top: 1px solid #ddd;
     text-align: left;
-    line-height: 1.6; /* Improves readability of paragraphs */
+    line-height: 1.6;
+    /* Improves readability of paragraphs */
 }
 
 /* === NEW STYLES FOR BETTER FORMATTING === */
 .dropdown-content strong {
     display: inline-block;
-    margin-top: 15px; /* Adds space above subheadings like "Non-Returnable Items" */
+    margin-top: 15px;
+    /* Adds space above subheadings like "Non-Returnable Items" */
     margin-bottom: 5px;
 }
 
 .dropdown-content ul {
-    padding-left: 20px; /* Indents the bullet points properly */
+    padding-left: 20px;
+    /* Indents the bullet points properly */
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
 .dropdown-content li {
-    margin-bottom: 8px; /* Adds a bit of space between each list item */
+    margin-bottom: 8px;
+    /* Adds a bit of space between each list item */
 }

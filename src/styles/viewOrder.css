@@ -1,11 +1,19 @@
 /* viewOrder.css */
 .vieworder-page {
-  background-color: var(--page-bg);
-  color: var(--text-default);
+    background-color: var(--page-bg);
+    color: var(--text-default);
 }
 
-.order-summary { max-width: 900px; margin: 0 auto; }
+.order-summary {
+    max-width: 900px;
+    margin: 0 auto;
+}
 
-.order-items { margin-top: 20px; }
+.order-items {
+    margin-top: 20px;
+}
 
-.order-total { font-size: 1.2em; font-weight: 600; }
+.order-total {
+    font-size: 1.2em;
+    font-weight: 600;
+}

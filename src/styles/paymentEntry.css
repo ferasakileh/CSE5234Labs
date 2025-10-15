@@ -1,3 +1,6 @@
 /* paymentEntry.css */
 
-.payment-page { background-color: var(--page-bg); color: var(--text-default); }
+.payment-page {
+    background-color: var(--page-bg);
+    color: var(--text-default);
+}

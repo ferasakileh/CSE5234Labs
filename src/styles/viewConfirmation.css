@@ -1,10 +1,21 @@
-
 /* viewConfirmation.css */
-.confirmation-page { background-color: var(--page-bg); color: var(--text-default); }
+.confirmation-page {
+    background-color: var(--page-bg);
+    color: var(--text-default);
+}
 
-.alert-success { background-color: #f4fdf4; color: #333; border: 2px solid var(--theme-maroon); }
+.alert-success {
+    background-color: #f4fdf4;
+    color: #333;
+    border: 2px solid var(--theme-maroon);
+}
 
 /* List groups stay local */
-.list-group-item { border: none; border-bottom: 1px solid #f0dcdc; }
-.list-group-item:last-child { border-bottom: none; }
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #f0dcdc;
+}
 
+.list-group-item:last-child {
+    border-bottom: none;
+}
