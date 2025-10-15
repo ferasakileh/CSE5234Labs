@@ -35,7 +35,7 @@ const ContactUs = () => {
             <div className="faqs-section">
                 <h2>Frequently Asked Questions</h2>
                 <Dropdown title="What are your shipping options?">
-                     <p>
+                    <p>
                         We currently offer a Standard Shipping option to ensure your products arrive fresh.
                     </p>
                     <ul>
@@ -46,7 +46,7 @@ const ContactUs = () => {
                 </Dropdown>
 
                 <Dropdown title="How fresh are the products?">
-                     <p>
+                    <p>
                         Freshness is the cornerstone of our business. We operate on a "harvest-to-order" model for most of our produce, meaning your items are often still in the field when you place your order.
                     </p>
                     <p>
@@ -99,7 +99,7 @@ const ContactUs = () => {
                     </p>
                 </Dropdown>
 
-                 <Dropdown title="How do I report an issue with my order?">
+                <Dropdown title="How do I report an issue with my order?">
                     <p>
                         Please inspect your order as soon as it arrives. If you receive an item that is damaged, defective, or incorrect, please contact us <strong>immediately</strong> so we can make it right.
                     </p>

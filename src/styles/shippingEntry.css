@@ -1,3 +1,6 @@
 /* shippingEntry.css */
 
-.shipping-page { background-color: var(--page-bg); color: var(--text-default); }
+.shipping-page {
+    background-color: var(--page-bg);
+    color: var(--text-default);
+}

@@ -13,9 +13,9 @@ const Purchase = () => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
     const [showCart, setShowCart] = useState(false);
-    
+
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
@@ -63,7 +63,7 @@ const Purchase = () => {
         <div className="container mt-4 purchase-page">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h1 className="text-theme fw-bold">{title}</h1>
-                <button 
+                <button
                     className="btn btn-theme position-relative"
                     onClick={() => setShowCart(true)}
                 >
@@ -80,16 +80,16 @@ const Purchase = () => {
                 {products.map((product) => (
                     <div key={product.id} className="col">
                         <div className="card h-100 border-theme shadow-sm">
-                            <img 
-                                src={product.image} 
-                                alt={product.name} 
-                                className="card-img-top p-3 rounded"
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="purchase-img card-img-top p-3 rounded"
                             />
                             <div className="card-body text-center">
                                 <h5 className="card-title text-theme fw-bold">{product.name}</h5>
                                 <p className="card-text text-muted fs-5">Price: ${product.price}</p>
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <button 
+                                    <button
                                         className="btn btn-theme flex-grow-1 me-2"
                                         onClick={() => addToCart(product)}
                                     >
@@ -107,7 +107,7 @@ const Purchase = () => {
                 ))}
             </div>
 
-            <CartModal 
+            <CartModal
                 show={showCart}
                 handleClose={() => setShowCart(false)}
                 cart={cart}
