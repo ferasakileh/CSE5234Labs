@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { products } from "../../data/products";
+import { CartContext } from "../../context/CartContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/viewOrder.css"; // theme styles
 
 const ViewOrder = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { setCart } = useContext(CartContext);
 
     const { order, shippingInfo } = location.state || {};
 
@@ -20,6 +22,7 @@ const ViewOrder = () => {
     }, 0);
 
     const handleConfirm = () => {
+        setCart([]); // Clear cart on order confirmation
         navigate("/purchase/viewConfirmation", {
             state: { order, shippingInfo, confirmationCode: "CONF123456" },
         });

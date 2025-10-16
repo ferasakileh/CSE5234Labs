@@ -69,7 +69,7 @@ export default function LandingPage() {
                     width: "100vw",
                     height: "100vh",
                     backgroundImage: `url(${BgTexture})`,
-                    backgroundSize: "100%",
+                    backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     filter: "brightness(1.05) saturate(1.1)",
@@ -79,7 +79,7 @@ export default function LandingPage() {
 
             {/* --- HERO SECTION --- */}
             <section
-                className="vh-100 d-flex flex-column justify-content-center align-items-center text-center position-relative"
+                className="hero-section d-flex flex-column justify-content-center align-items-center text-center position-relative"
             >
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

@@ -4,6 +4,10 @@
     max-width: 650px;
 }
 
+.hero-section {
+    height: calc(100vh - var(--navbar-height));
+}
+
 .about-section {
     background-color: #fffaf8;
 }
