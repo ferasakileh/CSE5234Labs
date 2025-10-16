@@ -1,10 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { products } from '../data/products';
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/cartModal.css'; // theme styling
 
-const CartModal = ({ show, handleClose, cart, setCart, handleCheckout }) => {
-    if (!show) return null;
+const CartModal = () => {
+    const navigate = useNavigate();
+    const { showCart, setShowCart, cart, setCart } = useContext(CartContext);
+
+    if (!showCart) return null;
 
     const handleQuantityChange = (productId, quantity) => {
         const newCart = cart.map(item => {
@@ -27,6 +33,28 @@ const CartModal = ({ show, handleClose, cart, setCart, handleCheckout }) => {
         }, 0);
     };
 
+    const handleCheckout = () => {
+        if (cart.length === 0) {
+            alert('Your cart is empty');
+            return;
+        }
+        const order = {
+            items: cart,
+            credit_card_number: '',
+            expir_date: '',
+            cvvCode: '',
+            card_holder_name: '',
+            address_1: '',
+            address_2: '',
+            city: '',
+            state: '',
+            zip: ''
+        };
+
+        setShowCart(false);
+        navigate('/purchase/paymentEntry', { state: { order } });
+    };
+
     return (
         <>
             <div className="modal-backdrop show"></div>
@@ -35,7 +63,7 @@ const CartModal = ({ show, handleClose, cart, setCart, handleCheckout }) => {
                     <div className="modal-content border-theme shadow-lg">
                         <div className="modal-header bg-theme text-white">
                             <h5 className="modal-title fw-bold">Shopping Cart</h5>
-                            <button type="button" className="btn-close btn-close-white" onClick={handleClose}></button>
+                            <button type="button" className="btn-close btn-close-white" onClick={() => setShowCart(false)}></button>
                         </div>
 
                         <div className="modal-body">
@@ -99,7 +127,7 @@ const CartModal = ({ show, handleClose, cart, setCart, handleCheckout }) => {
                             <button
                                 type="button"
                                 className="btn btn-outline-secondary"
-                                onClick={handleClose}
+                                onClick={() => setShowCart(false)}
                             >
                                 Continue Shopping
                             </button>

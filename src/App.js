@@ -16,7 +16,7 @@ function App() {
     return (
         <Router>
             <div className="App">
-              <Header></Header>
+                <Header />
                 <Routes>
                     <Route path='/purchase' element={<Purchase />} />
                     <Route path='/purchase/shippingEntry' element={<ShippingEntry />} />
@@ -27,7 +27,7 @@ function App() {
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/" element={<Home />} />
                 </Routes>
-                <Footer></Footer>
+                <Footer />
             </div>
         </Router>
     );

@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import { products } from '../../data/products';
-import CartModal from '../../components/CartModal';
+import { CartContext } from '../../context/CartContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/purchase.css'; // new theme styles
 
 const Purchase = () => {
-    let title = "Purchase Page";
-
-    const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
-    const [showCart, setShowCart] = useState(false);
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }, [cart]);
+    const { cart, setCart } = useContext(CartContext);
 
     const addToCart = (product) => {
         setCart(currentCart => {
@@ -39,43 +26,8 @@ const Purchase = () => {
         return item ? item.quantity : 0;
     };
 
-    const handleCheckout = () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty');
-            return;
-        }
-        const order = {
-            items: cart,
-            credit_card_number: '',
-            expir_date: '',
-            cvvCode: '',
-            card_holder_name: '',
-            address_1: '',
-            address_2: '',
-            city: '',
-            state: '',
-            zip: ''
-        };
-        navigate('/purchase/paymentEntry', { state: { order } });
-    };
-
     return (
         <div className="container mt-4 purchase-page">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1 className="text-theme fw-bold">{title}</h1>
-                <button
-                    className="btn btn-theme position-relative"
-                    onClick={() => setShowCart(true)}
-                >
-                    View Cart
-                    {cart.length > 0 && (
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-theme-danger">
-                            {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                        </span>
-                    )}
-                </button>
-            </div>
-
             <div className="row row-cols-1 row-cols-md-3 g-4">
                 {products.map((product) => (
                     <div key={product.id} className="col">
@@ -106,14 +58,6 @@ const Purchase = () => {
                     </div>
                 ))}
             </div>
-
-            <CartModal
-                show={showCart}
-                handleClose={() => setShowCart(false)}
-                cart={cart}
-                setCart={setCart}
-                handleCheckout={handleCheckout}
-            />
         </div>
     );
 };

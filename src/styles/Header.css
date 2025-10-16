@@ -1,46 +1,50 @@
-.bg-maroon {
-  background-color: #800000;
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar-brand-custom {
-  font-weight: 600;
-  font-size: 2rem;
-  letter-spacing: 1px;
-  color: #ffffff !important;
+    font-weight: 600;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: #ffffff !important;
 }
 
 .navbar-brand-custom:hover {
-  color: #ffd700 !important;
-  text-decoration: none;
+    color: #ffd700 !important;
+    text-decoration: none;
 }
 
 .navbar-nav {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 .nav-link {
-  color: #ffffff !important;
-  font-weight: 500;
-  font-size: 1.05rem;
-  padding: 0.5rem 1rem;
-  transition: color 0.3s ease, background-color 0.3s ease;
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 1.05rem;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #ffd700 !important;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 0.25rem;
+    color: #ffd700 !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.25rem;
 }
 
 .nav-link.active {
-  color: #ffd700 !important;
-  border-bottom: 2px solid #ffd700;
+    color: #ffd700 !important;
+    border-bottom: 2px solid #ffd700;
 }
 
 .navbar-toggler {
-  border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .navbar-toggler-icon {
-  filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1);
 }
