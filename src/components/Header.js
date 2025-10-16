@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import '../styles/Header.css';
 
 const Header = () => {
   return (
     <header>
   <nav className="navbar navbar-expand-lg navbar-dark bg-maroon">
         <div className="container">
-          <Link to="/purchase" className="navbar-brand navbar-brand-custom">Placeholder Name</Link>
+          <Link to="/" className="navbar-brand navbar-brand-custom">Harvest Hub</Link>
 
           <button
             className="navbar-toggler"
@@ -33,7 +34,7 @@ const Header = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/aboutUs" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+                <NavLink to="/contact" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
                   Contact Us
                 </NavLink>
               </li>

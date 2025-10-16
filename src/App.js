@@ -9,13 +9,14 @@ import ViewConfirmation from './pages/purchase-process/viewConfirmation';
 import Home from './pages/Home';
 import ContactUs from './pages/contactUs';
 import AboutUs from './pages/aboutUs';
-  import Header from './components/Header';
-  import Footer from './components/Footer';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
     return (
         <Router>
             <div className="App">
+              <Header></Header>
                 <Routes>
                     <Route path='/purchase' element={<Purchase />} />
                     <Route path='/purchase/shippingEntry' element={<ShippingEntry />} />
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/" element={<Home />} />
                 </Routes>
+                <Footer></Footer>
             </div>
         </Router>
     );

@@ -1,12 +1,14 @@
 import React from 'react';
+import '../styles/Footer.css';
+
 
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-maroon border-top mt-auto">
-      <div className="container py-3 text-center text-muted">
+      <div className="container py-3 text-center">
         <small>
-          © {year} Placeholder Name
+          © {year} Harvest Hub
         </small>
       </div>
     </footer>
