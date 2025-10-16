@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import CartModal from './CartModal';
@@ -6,7 +6,7 @@ import '../styles/Header.css';
 
 const Header = () => {
     const location = useLocation();
-    const { cart, setCart, showCart, setShowCart, handleCheckout } = useContext(CartContext);
+    const { cart, setShowCart } = useContext(CartContext);
 
     const hideCartOn = [
         '/purchase/shippingEntry',

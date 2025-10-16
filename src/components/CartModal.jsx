@@ -58,8 +58,11 @@ const CartModal = () => {
     return (
         <>
             <div className="modal-backdrop show"></div>
-            <div className="modal show d-block" tabIndex="-1" style={{ display: 'block' }}>
-                <div className="modal-dialog modal-lg modal-dialog-scrollable">
+            <div
+                className="modal show d-block"
+                tabIndex="-1"
+            >
+                <div className="modal-dialog modal-lg modal-dialog-scrollable d-flex flex-column justify-content-center">
                     <div className="modal-content border-theme shadow-lg">
                         <div className="modal-header bg-theme text-white">
                             <h5 className="modal-title fw-bold">Shopping Cart</h5>
@@ -144,7 +147,7 @@ const CartModal = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 };

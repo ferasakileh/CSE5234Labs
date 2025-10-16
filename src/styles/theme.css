@@ -4,8 +4,14 @@
     --theme-maroon: #800000;
     --theme-maroon-dark: #a33c3c;
     --theme-maroon-muted: rgba(128, 0, 0, 0.15);
+    --navbar-height: 70px;
     --page-bg: #fffdfd;
     --text-default: #333;
+}
+
+body {
+    padding-top: var(--navbar-height);
+    /* adjust based on navbar height */
 }
 
 /* Page backgrounds */
