@@ -69,7 +69,7 @@ export default function LandingPage() {
                     width: "100vw",
                     height: "100vh",
                     backgroundImage: `url(${BgTexture})`,
-                    backgroundSize: "100%",
+                    backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     filter: "brightness(1.05) saturate(1.1)",
