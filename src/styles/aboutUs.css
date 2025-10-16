@@ -1,0 +1,18 @@
+/* aboutUs.css */
+.text-theme {
+  color: #800000 !important;
+}
+
+.border-theme {
+  border-color: #800000 !important;
+}
+
+.about-page {
+  background-color: #fffdfd;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 6px 20px rgba(128, 0, 0, 0.2);
+}
