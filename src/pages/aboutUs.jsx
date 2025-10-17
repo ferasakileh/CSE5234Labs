@@ -7,7 +7,7 @@ const AboutUs = () => {
         <div className="container py-5 about-page">
             {/* Page Header */}
             <div className="text-center mb-5">
-                <h1 className="display-4 fw-bold text-theme">About Us</h1>
+                <h1 className="display-4 fw-bold text-theme">Harvest Hub</h1>
                 <p className="lead text-secondary">
                     Building connections between local farmers, vendors, and the community.
                 </p>
@@ -19,7 +19,7 @@ const AboutUs = () => {
                     Our Mission & Vision
                 </h2>
                 <p className="fs-5">
-                    <strong>Online Farmer's Market</strong> is dedicated to connecting local
+                    <strong>Harvest Hub</strong> is dedicated to connecting local
                     farmers and vendors directly with customers through a modern, accessible
                     online platform. Our vision is to build a sustainable ecosystem that
                     promotes healthy living, supports local businesses, and strengthens
