@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/aboutUs.css";
+import FerasImg from "../images/feras.jpg";
 
 const AboutUs = () => {
     return (
@@ -89,7 +90,7 @@ const AboutUs = () => {
                     <div className="col-md-3">
                         <div className="card shadow-sm border-theme text-center p-3 h-100">
                             <img
-                                src="https://via.placeholder.com/150"
+                                src={FerasImg}
                                 className="rounded-circle mx-auto my-3 border border-3 border-theme"
                                 alt="COO"
                                 width="150"
