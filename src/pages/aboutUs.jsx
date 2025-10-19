@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/aboutUs.css";
 import FerasImg from "../images/feras.jpg";
+import TimImg from "../images/tim.jpg";
 import EmersonImg from "../images/emerson.jpg";
 import YillyImg from "../images/yilly.jpeg";
 
@@ -72,7 +73,7 @@ const AboutUs = () => {
                     <div className="col-md-3">
                         <div className="card shadow-sm border-theme text-center p-3 h-100">
                             <img
-                                src="https://via.placeholder.com/150"
+                                src={TimImg}
                                 className="rounded-circle mx-auto my-3 border border-3 border-theme"
                                 alt="CTO"
                                 width="150"
