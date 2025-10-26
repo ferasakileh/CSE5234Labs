@@ -26,13 +26,14 @@ const Purchase = () => {
     }, []);
 
     const addToCart = (product) => {
-    const currentQty = getItemQuantity(product.id);
+    // check current quantity in cart
+    // const currentQty = getItemQuantity(product.id);
 
-    // Prevent adding beyond available stock
-    if (currentQty >= product.availableQty) {
-        alert(`Only ${product.availableQty} units of "${product.name}" are available.`);
-        return;
-    }
+    // // Prevent adding beyond available stock
+    // if (currentQty >= product.availableQty) {
+    //     alert(`Only ${product.availableQty} units of "${product.name}" are available.`);
+    //     return;
+    // }
 
     setCart((currentCart) => {
         const existingItem = currentCart.find(
@@ -84,9 +85,10 @@ const Purchase = () => {
                                     <button
                                         className="btn btn-theme flex-grow-1 me-2"
                                         onClick={() => addToCart(product)}
-                                        disabled={getItemQuantity(product.id) >= product.availableQty}   // ✅ NEW
+                                        // disabled={getItemQuantity(product.id) >= product.availableQty}
                                     >
-                                        {getItemQuantity(product.id) >= product.availableQty ? "Max Reached" : "Add to Cart"}
+                                        {/* {getItemQuantity(product.id) >= product.availableQty ? "Max Reached" : "Add to Cart"} */}
+                                        Add to Cart
                                     </button>
 
                                     {getItemQuantity(product.id) > 0 && (
