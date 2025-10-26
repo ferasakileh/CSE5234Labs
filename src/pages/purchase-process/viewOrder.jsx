@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { products } from "../../data/products";
 import { CartContext } from "../../context/CartContext";
+import { fetchInventory } from "../../api/inventoryApi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/viewOrder.css";
 
@@ -12,27 +12,43 @@ const ViewOrder = () => {
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState(null);
 
+  // Inventory state
+  const [inventory, setInventory] = useState([]);
+
+  useEffect(() => {
+    if (!location.state || !location.state.order || !location.state.shippingInfo) {
+      navigate('/purchase');
+      return;
+    }
+
+    // Fetch inventory
+    fetchInventory()
+      .then(items => setInventory(items))
+      .catch(err => console.error("Failed to load inventory:", err));
+  }, [location.state, navigate]);
+
   const { order, shippingInfo } = location.state || {};
   if (!order || !shippingInfo) {
     return <p className="text-center mt-4 text-danger">Missing order or shipping information.</p>;
   }
 
+  // Replace products.find()
   const totalCost = order.items.reduce((total, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    return total + (product?.price || 0) * item.quantity;
+    const product = inventory.find(p => p.id === item.productId);
+    return total + ((product?.price || 0) * item.quantity);
   }, 0);
 
   async function handleConfirm() {
     setSubmitting(true);
     setErr(null);
 
-    // Build the minimal shapes your backend expects
+    // Build minimal expected shapes
     const shipping = {
       name: shippingInfo.name,
       address: [
         shippingInfo.addressLine1,
         shippingInfo.addressLine2,
-        `${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`,
+        `${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
       ]
         .filter(Boolean)
         .join(", "),
@@ -44,9 +60,8 @@ const ViewOrder = () => {
     };
 
     try {
-      const result = await placeOrder({ shipping, payment }); // -> { confirmation }
-      // Clear cart and navigate with real confirmation code
-      setCart([]);
+      const result = await placeOrder({ items: order.items, shipping, payment });
+      setCart([]); // Clear local cart
       navigate("/purchase/viewConfirmation", {
         state: {
           order,
@@ -54,8 +69,8 @@ const ViewOrder = () => {
           confirmationCode: result.confirmation,
         },
       });
+
     } catch (e) {
-      // e = { status, code, details, raw }
       if (e.code === "INSUFFICIENT_QTY" && Array.isArray(e.details)) {
         const msg = e.details
           .map((d) => `${d.id} requested ${d.requested}, available ${d.available}`)
@@ -80,13 +95,12 @@ const ViewOrder = () => {
         <h3 className="text-theme mb-3">Items Ordered</h3>
         <ul className="list-group list-group-flush">
           {order.items.map((item) => {
-            const product = products.find((p) => p.id === item.productId);
+            const product = inventory.find((p) => p.id === item.productId);
             if (!product) return null;
+
             return (
               <li key={item.productId} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <strong>{product.name}</strong> × {item.quantity}
-                </div>
+                <div><strong>{product.name}</strong> × {item.quantity}</div>
                 <div className="text-theme fw-semibold">
                   ${(product.price * item.quantity).toFixed(2)}
                 </div>
@@ -94,6 +108,7 @@ const ViewOrder = () => {
             );
           })}
         </ul>
+
         <div className="mt-3 border-top pt-2 text-end">
           <h5 className="fw-bold">
             Total: <span className="text-theme">${totalCost.toFixed(2)}</span>
@@ -105,10 +120,7 @@ const ViewOrder = () => {
       <div className="card shadow-sm border-theme p-4 mb-4">
         <h3 className="text-theme mb-3">Payment Information</h3>
         <p><strong>Card Holder:</strong> {order.card_holder_name}</p>
-        <p>
-          <strong>Card Number:</strong>{" "}
-          {order.credit_card_number ? "**** **** **** " + order.credit_card_number.slice(-4) : "N/A"}
-        </p>
+        <p><strong>Card Number:</strong> **** **** **** {order.credit_card_number?.slice(-4)}</p>
         <p><strong>Expiration:</strong> {order.expir_date}</p>
       </div>
 
@@ -116,13 +128,8 @@ const ViewOrder = () => {
       <div className="card shadow-sm border-theme p-4 mb-4">
         <h3 className="text-theme mb-3">Shipping Details</h3>
         <p><strong>Name:</strong> {shippingInfo.name}</p>
-        <p>
-          <strong>Address:</strong> {shippingInfo.addressLine1}
-          {shippingInfo.addressLine2 && `, ${shippingInfo.addressLine2}`}
-        </p>
-        <p>
-          <strong>City/State/ZIP:</strong> {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zip}
-        </p>
+        <p><strong>Address:</strong> {shippingInfo.addressLine1}{shippingInfo.addressLine2 && `, ${shippingInfo.addressLine2}`}</p>
+        <p><strong>City/State/ZIP:</strong> {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zip}</p>
       </div>
 
       {/* Buttons */}

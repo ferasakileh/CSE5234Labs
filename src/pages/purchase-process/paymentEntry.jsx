@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { products } from '../../data/products';
+import { fetchInventory } from "../../api/inventoryApi";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/paymentEntry.css'; // new theme styling
+import '../../styles/paymentEntry.css';
 
 const PaymentEntry = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    React.useEffect(() => {
+    const [inventory, setInventory] = useState([]);
+
+    useEffect(() => {
         if (!location.state || !location.state.order) {
             navigate('/purchase');
         }
+
+        fetchInventory()
+            .then(items => setInventory(items))
+            .catch(err => console.error("Failed to load inventory:", err));
     }, [location.state, navigate]);
 
     const [paymentInfo, setPaymentInfo] = useState({
@@ -83,12 +89,14 @@ const PaymentEntry = () => {
             <div className="card shadow-sm border-theme mb-4 p-4">
                 <h3 className="text-theme mb-3">Order Summary</h3>
                 {location.state?.order?.items.map(item => {
-                    const product = products.find(p => p.id === item.productId);
+                    const product = inventory.find(p => p.id === item.productId);
+                    if (!product) return null;
+
                     return (
                         <div key={item.productId} className="d-flex justify-content-between align-items-center mb-2">
                             <span className="fw-semibold">{product.name}</span>
                             <span className="text-secondary">
-                                {item.quantity} × ${product.price} = <strong>${item.quantity * product.price}</strong>
+                                {item.quantity} × ${product.price} = <strong>${(item.quantity * product.price).toFixed(2)}</strong>
                             </span>
                         </div>
                     );
@@ -97,9 +105,9 @@ const PaymentEntry = () => {
                     <strong className="fs-5">
                         Total: $
                         {location.state?.order?.items.reduce((total, item) => {
-                            const product = products.find(p => p.id === item.productId);
-                            return total + (item.quantity * product.price);
-                        }, 0)}
+                            const product = inventory.find(p => p.id === item.productId);
+                            return total + (item.quantity * (product?.price || 0));
+                        }, 0).toFixed(2)}
                     </strong>
                 </div>
             </div>

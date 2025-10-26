@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { motion } from "framer-motion";
 import BgTexture from "../images/bg-texture.jpg";
-import { products } from "../data/products";
 import { partners } from "../data/partners";
+import { fetchInventory } from "../api/inventoryApi";
 import "../styles/home.css";
 
 export default function LandingPage() {
 
-    const marketplacePreview = products.slice(0, 4); // Show first 4 products as a preview
-    const partnersPreview = partners.slice(0, 3); // Show first 3 partners
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        fetchInventory()
+            .then((items) => setProducts(items))
+            .catch((err) => console.error("Failed to load products:", err));
+    }, []);
+
+    const marketplacePreview = products.slice(0, 4);
+    const partnersPreview = partners.slice(0, 3);
 
     const marketplaceElements = marketplacePreview.map((item, idx) => (
         <motion.div
@@ -31,7 +39,7 @@ export default function LandingPage() {
                 </div>
             </div>
         </motion.div>
-    ))
+    ));
 
     const partnersElements = partnersPreview.map((farmer, idx) => (
         <motion.div
@@ -55,12 +63,11 @@ export default function LandingPage() {
                 </div>
             </div>
         </motion.div>
-    ))
+    ));
 
     return (
         <div className="page-bg position-relative overflow-hidden">
-
-            {/* --- Background Image Layer --- */}
+            {/* --- Background Image --- */}
             <motion.div
                 style={{
                     position: "absolute",

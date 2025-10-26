@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { products } from '../data/products';
-import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import { fetchInventory } from "../api/inventoryApi";   // Use the microservice
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/cartModal.css'; // theme styling
+import '../styles/cartModal.css';
 
 const CartModal = () => {
     const navigate = useNavigate();
     const { showCart, setShowCart, cart, setCart } = useContext(CartContext);
+
+    const [inventory, setInventory] = useState([]);
+
+    // Load inventory data when modal opens
+    useEffect(() => {
+        fetchInventory()
+            .then((items) => setInventory(items))
+            .catch((err) => console.error("Failed to load inventory:", err));
+    }, []);
 
     if (!showCart) return null;
 
@@ -28,8 +36,8 @@ const CartModal = () => {
 
     const calculateTotal = () => {
         return cart.reduce((total, item) => {
-            const product = products.find(p => p.id === item.productId);
-            return total + (product.price * item.quantity);
+            const product = inventory.find(p => p.id === item.productId);
+            return total + ((product?.price || 0) * item.quantity);
         }, 0);
     };
 
@@ -38,19 +46,8 @@ const CartModal = () => {
             alert('Your cart is empty');
             return;
         }
-        const order = {
-            items: cart,
-            credit_card_number: '',
-            expir_date: '',
-            cvvCode: '',
-            card_holder_name: '',
-            address_1: '',
-            address_2: '',
-            city: '',
-            state: '',
-            zip: ''
-        };
 
+        const order = { items: cart };
         setShowCart(false);
         navigate('/purchase/paymentEntry', { state: { order } });
     };
@@ -58,10 +55,7 @@ const CartModal = () => {
     return (
         <>
             <div className="modal-backdrop show"></div>
-            <div
-                className="modal show d-block"
-                tabIndex="-1"
-            >
+            <div className="modal show d-block" tabIndex="-1">
                 <div className="modal-dialog modal-lg modal-dialog-scrollable d-flex flex-column justify-content-center">
                     <div className="modal-content border-theme shadow-lg">
                         <div className="modal-header bg-theme text-white">
@@ -77,7 +71,9 @@ const CartModal = () => {
                             ) : (
                                 <>
                                     {cart.map((item) => {
-                                        const product = products.find(p => p.id === item.productId);
+                                        const product = inventory.find(p => p.id === item.productId);
+                                        if (!product) return null; // ✅ wait until inventory loads
+
                                         return (
                                             <div key={item.productId} className="card mb-3 border-theme-light shadow-sm">
                                                 <div className="card-body">
@@ -86,6 +82,7 @@ const CartModal = () => {
                                                             <h6 className="card-title mb-0 text-theme fw-semibold">{product.name}</h6>
                                                             <small className="text-muted">Price: ${product.price}</small>
                                                         </div>
+
                                                         <div className="col-md-4">
                                                             <div className="input-group input-group-sm">
                                                                 <span className="input-group-text bg-theme text-white">Qty</span>
@@ -98,9 +95,10 @@ const CartModal = () => {
                                                                 />
                                                             </div>
                                                         </div>
+
                                                         <div className="col-md-4 text-end">
                                                             <p className="mb-1 text-secondary">
-                                                                Subtotal: <strong>${product.price * item.quantity}</strong>
+                                                                Subtotal: <strong>${(product.price * item.quantity).toFixed(2)}</strong>
                                                             </p>
                                                             <button
                                                                 className="btn btn-outline-theme btn-sm"
@@ -118,7 +116,7 @@ const CartModal = () => {
                                     <div className="card bg-light border-theme mt-3">
                                         <div className="card-body text-end">
                                             <h5 className="mb-0 text-theme fw-bold">
-                                                Total: ${calculateTotal()}
+                                                Total: ${calculateTotal().toFixed(2)}
                                             </h5>
                                         </div>
                                     </div>
@@ -127,27 +125,19 @@ const CartModal = () => {
                         </div>
 
                         <div className="modal-footer d-flex justify-content-between">
-                            <button
-                                type="button"
-                                className="btn btn-outline-secondary"
-                                onClick={() => setShowCart(false)}
-                            >
+                            <button type="button" className="btn btn-outline-secondary" onClick={() => setShowCart(false)}>
                                 Continue Shopping
                             </button>
 
                             {cart.length > 0 && (
-                                <button
-                                    type="button"
-                                    className="btn btn-theme"
-                                    onClick={handleCheckout}
-                                >
+                                <button type="button" className="btn btn-theme" onClick={handleCheckout}>
                                     Proceed to Checkout
                                 </button>
                             )}
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 };
