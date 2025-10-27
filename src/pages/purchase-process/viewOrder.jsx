@@ -39,50 +39,53 @@ const ViewOrder = () => {
   }, 0);
 
   async function handleConfirm() {
-    setSubmitting(true);
-    setErr(null);
+  setSubmitting(true);
+  setErr(null);
 
-    // Build minimal expected shapes
-    const shipping = {
-      name: shippingInfo.name,
-      address: [
-        shippingInfo.addressLine1,
-        shippingInfo.addressLine2,
-        `${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
-      ]
-        .filter(Boolean)
-        .join(", "),
-    };
+  // Build minimal expected shapes
+  const shipping = {
+    name: shippingInfo.name,
+    address: [
+      shippingInfo.addressLine1,
+      shippingInfo.addressLine2,
+      `${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
+    ]
+      .filter(Boolean)
+      .join(", "),
+  };
 
-    const payment = {
-      method: "card",
-      last4: (order.credit_card_number || "").slice(-4) || "0000",
-    };
+  const payment = {
+    method: "card",
+    last4: (order.credit_card_number || "").slice(-4) || "0000",
+  };
 
-    try {
-      const result = await placeOrder({ items: order.items, shipping, payment });
-      setCart([]); // Clear local cart
-      navigate("/purchase/viewConfirmation", {
-        state: {
-          order,
-          shippingInfo,
-          confirmationCode: result.confirmation,
-        },
-      });
-
-    } catch (e) {
-      if (e.code === "INSUFFICIENT_QTY" && Array.isArray(e.details)) {
-        const msg = e.details
-          .map((d) => `${d.id} requested ${d.requested}, available ${d.available}`)
-          .join("; ");
-        setErr(`Out of stock: ${msg}. Please update your quantities and try again.`);
-      } else {
-        setErr("Order failed. Please try again.");
-      }
-    } finally {
-      setSubmitting(false);
+  try {
+    const result = await placeOrder({ items: order.items, shipping, payment });
+    setCart([]); // Clear local cart
+    navigate("/purchase/viewConfirmation", {
+      state: {
+        order,
+        shippingInfo,
+        confirmationCode: result.confirmation,
+      },
+    });
+  } catch (e) {
+    if (e.code === "INSUFFICIENT_QTY" && Array.isArray(e.details)) {
+      const msg = e.details
+        .map((d) => {
+          const match = inventory.find((p) => p.id === d.id);
+          const name = match ? match.name : d.id; // fallback to id if not found
+          return `${name} requested ${d.requested}, available ${d.available}`;
+        })
+        .join("; ");
+      setErr(`Out of stock: ${msg}. Please update your quantities and try again.`);
+    } else {
+      setErr("Order failed. Please try again.");
     }
+  } finally {
+    setSubmitting(false);
   }
+}
 
   return (
     <div className="container mt-4 vieworder-page">
