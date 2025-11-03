@@ -9,27 +9,25 @@ export class ApiError extends Error {
   }
 }
 
-// Fetch all inventory items
+//  Fetch all inventory items
 export async function fetchInventory() {
   const res = await fetch(BASE, { method: "GET" });
-
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new ApiError("Failed to load inventory", res.status, data);
-
   return data;
 }
 
-// Optional: fetch by name
+//  Fetch by name
 export async function searchInventoryByName(name) {
-  const res = await fetch(`${BASE}/items?name=${encodeURIComponent(name)}`);
+  const res = await fetch(`${BASE}/items?name=${encodeURIComponent(name)}`, { method: "GET" });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new ApiError("Search failed", res.status, data);
   return data;
 }
 
-// Optional: fetch single item
+//  Fetch single item by ID
 export async function fetchItemById(id) {
-  const res = await fetch(`${BASE}/items/${id}`);
+  const res = await fetch(`${BASE}/items/${id}`, { method: "GET" });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new ApiError("Item not found", res.status, data);
   return data;
