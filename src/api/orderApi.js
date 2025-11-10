@@ -9,42 +9,70 @@ export class ApiError extends Error {
 }
 
 function normalizeOrder(input = {}) {
-  // Accept many caller shapes and convert to Lambda's required payload
   const itemsSrc = input.items || input.cart || [];
+  const items = itemsSrc
+    .map((line) => ({
+      id: line.id || line.productId,
+      name: line.name || "",
+      qty: Number(line.qty ?? line.quantity ?? 1),
+    }))
+    .filter((it) => it.id && it.qty > 0);
 
-  const items = itemsSrc.map((line) => ({
-    id: line.id || line.productId,                 // required
-    name: line.name || "",                         // optional, nice to send
-    qty: Number(line.qty ?? line.quantity ?? 1),   // required
-  })).filter(it => it.id && it.qty > 0);
-
-  return {
+  const payload = {
+    items,
     customer_name:
       input.customer_name ||
       input.customerName ||
       input?.shippingInfo?.name ||
+      input?.shipping?.name ||
       "Guest",
     customer_email:
       input.customer_email ||
       input.customerEmail ||
       input?.shippingInfo?.email ||
+      input?.shipping?.email ||
       "guest@example.com",
-    shipping_info_id:
-      input.shipping_info_id ??
-      input.shippingInfoId ??
-      1, // default OK for the lab
-    payment_info_id:
-      input.payment_info_id ??
-      input.paymentInfoId ??
-      1, // default OK for the lab
-    items,
   };
+
+  // If caller already has saved IDs, include them; otherwise let Lambda insert rows.
+  const sid = input.shipping_info_id ?? input.shippingInfoId;
+  if (sid != null) payload.shipping_info_id = sid;
+
+  const pid = input.payment_info_id ?? input.paymentInfoId;
+  if (pid != null) payload.payment_info_id = pid;
+
+  // Pass through full shipping object if provided
+  if (input.shipping) {
+    const s = input.shipping;
+    payload.shipping = {
+      address1: s.address1 || s.addressLine1 || "",
+      address2: s.address2 || s.addressLine2 || "",
+      city: s.city || "",
+      state: s.state || "",
+      country: s.country || "US",
+      postal_code: s.postal_code || s.zip || "",
+      email: s.email || payload.customer_email,
+    };
+  }
+
+  // Pass through full payment object if provided
+  if (input.payment) {
+    const p = input.payment;
+    payload.payment = {
+      holder_name: p.holder_name || p.card_holder_name || p.holder || "",
+      card_num:
+        p.card_num || p.number || p.credit_card_number || p.cardNumber || "",
+      exp_date: p.exp_date || p.expiration || p.expir_date || "",
+      cvv: p.cvv || "",
+    };
+  }
+
+  return payload;
 }
 
 export async function placeOrder(orderLike) {
   const payload = normalizeOrder(orderLike);
 
-  // quick client-side guardrails (clear error messages)
   if (!Array.isArray(payload.items) || payload.items.length === 0) {
     throw new ApiError("ORDER_FAILED", { details: "Cart is empty." });
   }
@@ -69,7 +97,7 @@ export async function placeOrder(orderLike) {
       code: data.error || "ORDER_FAILED",
       details: data.details || data.message || null,
       raw: data,
-      sent: payload,         // helpful in your console if it ever fails again
+      sent: payload,
     });
   }
 

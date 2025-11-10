@@ -42,26 +42,47 @@ const ViewOrder = () => {
   setSubmitting(true);
   setErr(null);
 
-  // Build minimal expected shapes
+  // Build items the Lambda expects
+  const items = (order.items || []).map((it) => {
+    const prod = inventory.find((p) => p.id === it.productId);
+    return {
+      id: it.productId,
+      name: prod?.name || "",
+      qty: Number(it.quantity || 1),
+    };
+  });
+
+  // Shipping object (normalized to API schema)
   const shipping = {
-    name: shippingInfo.name,
-    address: [
-      shippingInfo.addressLine1,
-      shippingInfo.addressLine2,
-      `${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}`
-    ]
-      .filter(Boolean)
-      .join(", "),
+    address1: shippingInfo.addressLine1 || "",
+    address2: shippingInfo.addressLine2 || "",
+    city: shippingInfo.city || "",
+    state: shippingInfo.state || "",
+    country: "US",
+    postal_code: shippingInfo.zip || "",
+    email: shippingInfo.email || order.customerEmail || "guest@example.com",
   };
 
+  // Payment object (send raw so Lambda can persist)
   const payment = {
-    method: "card",
-    last4: (order.credit_card_number || "").slice(-4) || "0000",
+    holder_name: order.card_holder_name || shippingInfo.name || "Guest",
+    card_num: order.credit_card_number || "",
+    exp_date: order.expir_date || "",
+    cvv: order.cvv || "",           // include if you collect it; otherwise leave ""
   };
 
   try {
-    const result = await placeOrder({ items: order.items, shipping, payment });
-    setCart([]); // Clear local cart
+    const result = await placeOrder({
+      items,
+      shipping,
+      payment,
+      customer_name: shippingInfo.name || "Guest",
+      customer_email: shippingInfo.email || "guest@example.com",
+      // if you ever save & reuse IDs, you can also pass:
+      // shipping_info_id, payment_info_id
+    });
+
+    setCart([]); // clear cart
     navigate("/purchase/viewConfirmation", {
       state: {
         order,
@@ -74,7 +95,7 @@ const ViewOrder = () => {
       const msg = e.details
         .map((d) => {
           const match = inventory.find((p) => p.id === d.id);
-          const name = match ? match.name : d.id; // fallback to id if not found
+          const name = match ? match.name : d.id;
           return `${name} requested ${d.requested}, available ${d.available}`;
         })
         .join("; ");
@@ -86,6 +107,7 @@ const ViewOrder = () => {
     setSubmitting(false);
   }
 }
+    
 
   return (
     <div className="container mt-4 vieworder-page">
