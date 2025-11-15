@@ -37,6 +37,7 @@ const ShippingEntry = () => {
             state: {
                 order,
                 shippingInfo,
+                last4: order.last4, // Pass last4 from order
             },
         });
     };

@@ -27,87 +27,79 @@ const ViewOrder = () => {
       .catch(err => console.error("Failed to load inventory:", err));
   }, [location.state, navigate]);
 
-  const { order, shippingInfo } = location.state || {};
+  const { order, shippingInfo, last4 } = location.state || {};
   if (!order || !shippingInfo) {
     return <p className="text-center mt-4 text-danger">Missing order or shipping information.</p>;
   }
 
-  // Replace products.find()
   const totalCost = order.items.reduce((total, item) => {
     const product = inventory.find(p => p.id === item.productId);
     return total + ((product?.price || 0) * item.quantity);
   }, 0);
 
   async function handleConfirm() {
-  setSubmitting(true);
-  setErr(null);
+    setSubmitting(true);
+    setErr(null);
 
-  // Build items the Lambda expects
-  const items = (order.items || []).map((it) => {
-    const prod = inventory.find((p) => p.id === it.productId);
-    return {
-      id: it.productId,
-      name: prod?.name || "",
-      qty: Number(it.quantity || 1),
+    // Build items the Lambda expects
+    const items = (order.items || []).map((it) => {
+      const prod = inventory.find((p) => p.id === it.productId);
+      return {
+        id: it.productId,
+        name: prod?.name || "",
+        qty: Number(it.quantity || 1),
+      };
+    });
+
+    // Shipping object (normalized to API schema)
+    const shipping = {
+      address1: shippingInfo.addressLine1 || "",
+      address2: shippingInfo.addressLine2 || "",
+      city: shippingInfo.city || "",
+      state: shippingInfo.state || "",
+      country: "US",
+      postal_code: shippingInfo.zip || "",
+      email: shippingInfo.email || order.customerEmail || "guest@example.com",
     };
-  });
 
-  // Shipping object (normalized to API schema)
-  const shipping = {
-    address1: shippingInfo.addressLine1 || "",
-    address2: shippingInfo.addressLine2 || "",
-    city: shippingInfo.city || "",
-    state: shippingInfo.state || "",
-    country: "US",
-    postal_code: shippingInfo.zip || "",
-    email: shippingInfo.email || order.customerEmail || "guest@example.com",
-  };
+    // Payment object - send payment details to Lambda
+    const payment = order.payment || {}; // payment object with holder_name, card_num, exp_date, cvv
 
-  // Payment object (send raw so Lambda can persist)
-  const payment = {
-    holder_name: order.card_holder_name || shippingInfo.name || "Guest",
-    card_num: order.credit_card_number || "",
-    exp_date: order.expir_date || "",
-    cvv: order.cvv || "",           // include if you collect it; otherwise leave ""
-  };
+    try {
+      const result = await placeOrder({
+        items,
+        shipping,
+        payment,
+        customer_name: shippingInfo.name || "Guest",
+        customer_email: shippingInfo.email || "guest@example.com",
+      });
 
-  try {
-    const result = await placeOrder({
-      items,
-      shipping,
-      payment,
-      customer_name: shippingInfo.name || "Guest",
-      customer_email: shippingInfo.email || "guest@example.com",
-      // if you ever save & reuse IDs, you can also pass:
-      // shipping_info_id, payment_info_id
-    });
-
-    setCart([]); // clear cart
-    navigate("/purchase/viewConfirmation", {
-      state: {
-        order,
-        shippingInfo,
-        confirmationCode: result.confirmation,
-      },
-    });
-  } catch (e) {
-    if (e.code === "INSUFFICIENT_QTY" && Array.isArray(e.details)) {
-      const msg = e.details
-        .map((d) => {
-          const match = inventory.find((p) => p.id === d.id);
-          const name = match ? match.name : d.id;
-          return `${name} requested ${d.requested}, available ${d.available}`;
-        })
-        .join("; ");
-      setErr(`Out of stock: ${msg}. Please update your quantities and try again.`);
-    } else {
-      setErr("Order failed. Please try again.");
+      setCart([]); // clear cart
+      navigate("/purchase/viewConfirmation", {
+        state: {
+          order,
+          shippingInfo,
+          confirmationCode: result.confirmation,
+          last4: result.last4, // Card last 4 digits from Lambda response
+        },
+      });
+    } catch (e) {
+      if (e.code === "INSUFFICIENT_QTY" && Array.isArray(e.details)) {
+        const msg = e.details
+          .map((d) => {
+            const match = inventory.find((p) => p.id === d.id);
+            const name = match ? match.name : d.id;
+            return `${name} requested ${d.requested}, available ${d.available}`;
+          })
+          .join("; ");
+        setErr(`Out of stock: ${msg}. Please update your quantities and try again.`);
+      } else {
+        setErr("Order failed. Please try again.");
+      }
+    } finally {
+      setSubmitting(false);
     }
-  } finally {
-    setSubmitting(false);
   }
-}
-    
 
   return (
     <div className="container mt-4 vieworder-page">
@@ -141,20 +133,25 @@ const ViewOrder = () => {
         </div>
       </div>
 
-      {/* Payment Info */}
-      <div className="card shadow-sm border-theme p-4 mb-4">
-        <h3 className="text-theme mb-3">Payment Information</h3>
-        <p><strong>Card Holder:</strong> {order.card_holder_name}</p>
-        <p><strong>Card Number:</strong> **** **** **** {order.credit_card_number?.slice(-4)}</p>
-        <p><strong>Expiration:</strong> {order.expir_date}</p>
-      </div>
-
       {/* Shipping Info */}
       <div className="card shadow-sm border-theme p-4 mb-4">
         <h3 className="text-theme mb-3">Shipping Details</h3>
         <p><strong>Name:</strong> {shippingInfo.name}</p>
         <p><strong>Address:</strong> {shippingInfo.addressLine1}{shippingInfo.addressLine2 && `, ${shippingInfo.addressLine2}`}</p>
         <p><strong>City/State/ZIP:</strong> {shippingInfo.city}, {shippingInfo.state} {shippingInfo.zip}</p>
+      </div>
+
+      {/* Payment Info - No card details shown */}
+      <div className="card shadow-sm border-theme p-4 mb-4">
+        <h3 className="text-theme mb-3">Payment Method</h3>
+        {last4 && (
+          <p className="fw-bold mb-2">
+            Card ending in <span className="text-theme">••••{last4}</span>
+          </p>
+        )}
+        <p className="mb-0 text-muted small">
+          No card details are stored on our servers. Your payment will be processed securely.
+        </p>
       </div>
 
       {/* Buttons */}

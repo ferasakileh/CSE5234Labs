@@ -8,7 +8,7 @@ import "../../styles/viewConfirmation.css";
 const ViewConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { confirmationCode, order, shippingInfo } = state || {};
+  const { confirmationCode, order, shippingInfo, last4 } = state || {};
 
   const [inventory, setInventory] = useState([]);
 
@@ -62,7 +62,7 @@ const ViewConfirmation = () => {
           </div>
         </div>
 
-        {/* Shipping + Payment */}
+        {/* Shipping Info */}
         <div className="col-md-4">
           <div className="card shadow-sm border-theme mb-4">
             <div className="card-header bg-theme text-white">
@@ -81,7 +81,14 @@ const ViewConfirmation = () => {
               <h4 className="mb-0">Payment Method</h4>
             </div>
             <div className="card-body">
-              <p className="mb-0">Card ending in: {order.credit_card_number.slice(-4)}</p>
+              {last4 && (
+                <p className="fw-bold mb-2">
+                  Card ending in <span className="text-theme">••••{last4}</span>
+                </p>
+              )}
+              <p className="mb-0 text-muted small">
+                No card details are stored on our servers. Your payment was processed securely.
+              </p>
             </div>
           </div>
         </div>

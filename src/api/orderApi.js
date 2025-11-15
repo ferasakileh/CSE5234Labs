@@ -55,14 +55,13 @@ function normalizeOrder(input = {}) {
     };
   }
 
-  // Pass through full payment object if provided
+  // Pass through payment object (holder_name, card_num, exp_date, cvv)
   if (input.payment) {
     const p = input.payment;
     payload.payment = {
-      holder_name: p.holder_name || p.card_holder_name || p.holder || "",
-      card_num:
-        p.card_num || p.number || p.credit_card_number || p.cardNumber || "",
-      exp_date: p.exp_date || p.expiration || p.expir_date || "",
+      holder_name: p.holder_name || "",
+      card_num: p.card_num || "",
+      exp_date: p.exp_date || "",
       cvv: p.cvv || "",
     };
   }

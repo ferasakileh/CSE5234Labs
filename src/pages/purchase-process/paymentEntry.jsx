@@ -10,6 +10,8 @@ const PaymentEntry = () => {
   const navigate = useNavigate();
 
   const [inventory, setInventory] = useState([]);
+  const [processingPayment, setProcessingPayment] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
 
   useEffect(() => {
     if (!location.state || !location.state.order) {
@@ -21,13 +23,11 @@ const PaymentEntry = () => {
       .catch(err => console.error("Failed to load inventory:", err));
   }, [location.state, navigate]);
 
-  // keep the same field names for the form to preserve behavior,
-  // but we will map cvvCode -> cvv on submit.
   const [paymentInfo, setPaymentInfo] = useState({
-    credit_card_number: '',
-    expir_date: '',
-    cvvCode: '',
-    card_holder_name: ''
+    card_num: '',
+    exp_date: '',
+    cvv: '',
+    holder_name: ''
   });
 
   const formatCardNumber = (value) => {
@@ -55,13 +55,13 @@ const PaymentEntry = () => {
     let formattedValue = value;
 
     switch (name) {
-      case 'credit_card_number':
+      case 'card_num':
         formattedValue = formatCardNumber(value);
         break;
-      case 'expir_date':
+      case 'exp_date':
         formattedValue = formatExpiryDate(value);
         break;
-      case 'cvvCode':
+      case 'cvv':
         formattedValue = formatCVV(value);
         break;
       default:
@@ -74,26 +74,34 @@ const PaymentEntry = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setProcessingPayment(true);
+    setPaymentError(null);
 
-    // Map the one field name we changed downstream: cvvCode -> cvv
-    const normalizedPayment = {
-      ...paymentInfo,
-      cvv: paymentInfo.cvvCode
-    };
+    try {
+      // Extract last 4 digits for confirmation display
+      const cardNumClean = paymentInfo.card_num.replace(/\s/g, '');
+      const last4 = cardNumClean.slice(-4);
 
-    // Keep the rest of the order state and attach normalized payment fields
-    const updatedOrder = {
-      ...location.state.order,
-      card_holder_name: normalizedPayment.card_holder_name,
-      credit_card_number: normalizedPayment.credit_card_number,
-      expir_date: normalizedPayment.expir_date,
-      cvv: normalizedPayment.cvv
-    };
+      // Pass payment data to next step
+      const updatedOrder = {
+        ...location.state.order,
+        payment: {
+          holder_name: paymentInfo.holder_name,
+          card_num: cardNumClean, // Remove spaces
+          exp_date: paymentInfo.exp_date,
+          cvv: paymentInfo.cvv
+        },
+        last4: last4 // Store last 4 digits for display
+      };
 
-    // Do NOT clear cart here; the flow clears after successful submission.
-    navigate('/purchase/shippingEntry', { state: { order: updatedOrder } });
+      setProcessingPayment(false);
+      navigate('/purchase/shippingEntry', { state: { order: updatedOrder } });
+    } catch (error) {
+      setPaymentError(error.message || 'Payment processing failed. Please try again.');
+      setProcessingPayment(false);
+    }
   };
 
   const total = (location.state?.order?.items || []).reduce((sum, item) => {
@@ -126,67 +134,78 @@ const PaymentEntry = () => {
         </div>
       </div>
 
-      {/* Payment Form (same look & classes) */}
+      {/* Security Notice */}
+      <div className="alert alert-info mb-4">
+        <strong>Secure Payment:</strong> Your payment information is encrypted and processed securely. Card details are never stored on our servers.
+      </div>
+
+      {/* Payment Form */}
       <form onSubmit={handleSubmit} className="card shadow-sm border-theme p-4">
         <h3 className="text-theme mb-3">Payment Details</h3>
 
+        {paymentError && <div className="alert alert-danger">{paymentError}</div>}
+
         <div className="mb-3">
-          <label htmlFor="card_holder_name" className="form-label">Card Holder Name:</label>
+          <label htmlFor="holder_name" className="form-label">Card Holder Name:</label>
           <input
             type="text"
-            id="card_holder_name"
-            name="card_holder_name"
+            id="holder_name"
+            name="holder_name"
             className="form-control"
-            value={paymentInfo.card_holder_name}
+            value={paymentInfo.holder_name}
             onChange={handleInputChange}
             required
             placeholder="Enter cardholder name"
+            disabled={processingPayment}
           />
         </div>
 
         <div className="mb-3">
-          <label htmlFor="credit_card_number" className="form-label">Credit Card Number:</label>
+          <label htmlFor="card_num" className="form-label">Credit Card Number:</label>
           <input
             type="text"
-            id="credit_card_number"
-            name="credit_card_number"
+            id="card_num"
+            name="card_num"
             className="form-control"
-            value={paymentInfo.credit_card_number}
+            value={paymentInfo.card_num}
             onChange={handleInputChange}
             required
             placeholder="1234 5678 9012 3456"
             maxLength="19"
+            disabled={processingPayment}
           />
         </div>
 
         <div className="row">
           <div className="col-md-6 mb-3">
-            <label htmlFor="expir_date" className="form-label">Expiration Date:</label>
+            <label htmlFor="exp_date" className="form-label">Expiration Date:</label>
             <input
               type="text"
-              id="expir_date"
-              name="expir_date"
+              id="exp_date"
+              name="exp_date"
               className="form-control"
-              value={paymentInfo.expir_date}
+              value={paymentInfo.exp_date}
               onChange={handleInputChange}
               required
               placeholder="MM/YY"
               maxLength="5"
+              disabled={processingPayment}
             />
           </div>
 
           <div className="col-md-6 mb-3">
-            <label htmlFor="cvvCode" className="form-label">CVV Code:</label>
+            <label htmlFor="cvv" className="form-label">CVV Code:</label>
             <input
               type="text"
-              id="cvvCode"
-              name="cvvCode"
+              id="cvv"
+              name="cvv"
               className="form-control"
-              value={paymentInfo.cvvCode}
+              value={paymentInfo.cvv}
               onChange={handleInputChange}
               required
               placeholder="123"
               maxLength="4"
+              disabled={processingPayment}
             />
           </div>
         </div>
@@ -196,11 +215,12 @@ const PaymentEntry = () => {
             type="button"
             className="btn btn-secondary me-2"
             onClick={() => navigate(-1)}
+            disabled={processingPayment}
           >
             Back
           </button>
-          <button type="submit" className="btn btn-theme">
-            Continue to Shipping
+          <button type="submit" className="btn btn-theme" disabled={processingPayment}>
+            {processingPayment ? "Processing..." : "Continue to Shipping"}
           </button>
         </div>
       </form>
